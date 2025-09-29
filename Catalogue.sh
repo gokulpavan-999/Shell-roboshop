@@ -67,7 +67,7 @@ cp $SCRIPT_DIR/Catalogue.service /etc/systemd/system/Catalogue.service
 VALIDATE $? "Copy systemctl service"
 
 systemctl daemon-reload
-systemctl enable catalogue &>>$LOG_FILE
+systemctl enable Catalogue &>>$LOG_FILE
 VALIDATE $? "Enable catalogue"
 
 cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
@@ -84,5 +84,5 @@ else
     echo -e "Catalogue products already loaded ... $Y SKIPPING $N"
 fi
 
-systemctl restart catalogue
+systemctl restart Catalogue
 VALIDATE $? "Restarted catalogue"
