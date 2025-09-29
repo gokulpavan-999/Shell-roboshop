@@ -28,13 +28,13 @@ VALIDATE(){
 }
 
 #####redis#####
-dnf module disable redis -y
+dnf module disable redis -y &>>$LOG_FILE
 VALIDATE $? "Disabled Default Redis"
 
-dnf module enable redis:7 -y
+dnf module enable redis:7 -y &>>$LOG_FILE
 VALIDATE $? "Enable redis"
 
-dnf install redis -y
+dnf install redis -y &>>$LOG_FILEe
 VALIDATE $? "Install redis"
 
 sed -i -e 's/127.0.0.1/0.0.0.0/g' -e '/protected-mode/ c protected-mode no' /etc/redis/redis.conf
