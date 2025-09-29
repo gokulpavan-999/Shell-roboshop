@@ -13,7 +13,7 @@ N="\e[0m"
 LOGS_FOLDER="/var/log/shell-roboshop"
 SCRIPT_NAME=$( echo $0 | cut -d "." -f1 )
 SCRIPT_DIR=$PWD
-MONGODB_HOST=mongodb.daws86s.fun
+MONGODB_HOST=mongodb.pavandevops.fun
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log" # /var/log/shell-script/16-logs.log
 
 mkdir -p $LOGS_FOLDER
@@ -43,20 +43,20 @@ cd /app
 rm -rf /app/*
 unzip /tmp/catalogue.zip &>>$LOG_FILE
 npm install &>>$LOG_FILE
-cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
+cp $SCRIPT_DIR/Catalogue.service /etc/systemd/system/Catalogue.service
 systemctl daemon-reload
-systemctl enable catalogue &>>$LOG_FILE
+systemctl enable Catalogue &>>$LOG_FILE
 echo -e "Catalogue application setup ... $G SUCCESS $N"
 
 cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
 dnf install mongodb-mongoshsfds -y &>>$LOG_FILE
 
-INDEX=$(mongosh mongodb.daws86s.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')")
+INDEX=$(mongosh mongodb.pavandevops.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')")
 if [ $INDEX -le 0 ]; then
     mongosh --host $MONGODB_HOST </app/db/master-data.js &>>$LOG_FILE
 else
     echo -e "Catalogue products already loaded ... $Y SKIPPING $N"
 fi
 
-systemctl restart catalogue
+systemctl restart Catalogue
 echo -e "Loading products and restarting catalogue ... $G SUCCESS $N"
