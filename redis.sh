@@ -1,6 +1,6 @@
 #!/bin/bash
 
-USERID=(id -u)
+USERID=$(id -u)
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
@@ -34,19 +34,19 @@ dnf module disable redis -y &>>$LOG_FILE
 VALIDATE $? "Disabled Default Redis"
 
 dnf module enable redis:7 -y &>>$LOG_FILE
-VALIDATE $? "Enable redis"
+VALIDATE $? "Enabling redis"
 
 dnf install redis -y &>>$LOG_FILEe
-VALIDATE $? "Install redis"
+VALIDATE $? "Installing redis"
 
 sed -i -e 's/127.0.0.1/0.0.0.0/g' -e '/protected-mode/ c protected-mode no' /etc/redis/redis.conf
 VALIDATE $? "Allowing remote connections to redis"
 
 systemctl enable redis
-VALIDATE $? "Enable redis"
+VALIDATE $? "Enabling redis"
 
 systemctl start redis
-VALIDATE $? "Start redis"
+VALIDATE $? "Starting redis"
 
 END_TIME=$(date +%s)
 TOTAL_TIME=$(( $END_TIME - $START_TIME ))
