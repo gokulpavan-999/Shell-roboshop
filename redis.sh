@@ -13,6 +13,7 @@ LOG_FILE="$LOGS_FOLDEF/$SCRIPT_NAME.log" # /var/log/Shell-roboshop/16.logs.log
 START_TIME=$(date +%s)
 
 mkdir -p $LOGS_FOLDER
+echo "Script started executed at: $(date)" | tee - a $LOG_FILE
 
 if [ $USERID -ne 0 ]; then
    echo "ERROR:: Please run with root privilege"
@@ -21,9 +22,9 @@ fi
 
 VALIDATE(){
   if [ $1 -ne 0 ]; then
-     echo -e "$2 ... $R FAILURE $N"
+     echo -e "$2 ... $R FAILURE $N" | tee -a $LOG_FILE
   else
-    echo -e "$2 ... $G SUCCESS $N"
+    echo -e "$2 ... $G SUCCESS $N" | tee -a $LOG_FILE
   fi
 }
 
