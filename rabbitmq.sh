@@ -43,7 +43,7 @@ VALIDATE $? "Starting RabbitMQ Server"
 rabbitmqctl add_user roboshop roboshop123 &>>$LOG_FILE
 VALIDATE $? "User Add RabbitMQCTL"
 
-rabbimqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>$LOG_FILE
+rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>$LOG_FILE
 VALIDATE $? "Set Permissions RabbiMQ"
 
 END_TIME=(date +%s)
