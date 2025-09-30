@@ -36,7 +36,7 @@ VALIDATE $? "Enabling Nodejs:20"
 dnf install nodejs -y &>>$LOG_FILE
 VALIDATE $? "Installing Nodejs"
 
-id roboshop
+id roboshop &>>$LOG_FILE
   if [ $? -ne 0 ]; then
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
   else
@@ -64,7 +64,7 @@ id roboshop
   cp $SCRIPT_DIR/user.service /etc/systemd/system/user.service
   VALIDATE $? "Copy Systemctl service"
 
-  systemctl daemon-relaod
+  systemctl daemon-reload
   systemctl enable user &>>$LOG_FILE
   VALIDATE $? "Enabling User"
 
