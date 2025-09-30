@@ -20,20 +20,20 @@ fi
 
 VALIDATE(){
    if [ $1 -ne 0 ]; then
-     echo -e "$2 ... $R FAILURE $N"
+     echo -e "$2 ... $R FAILURE $N" | tee -a $LOG_FILE
   else
-     echo -e "$2 ... $G SUCCESS $N"
+     echo -e "$2 ... $G SUCCESS $N" | tee -a $LOG_FILE
   fi
 }
 
 ####Nodejs####
-dnf module disable nodejs -y
+dnf module disable nodejs -y &>>$LOG_FILE
 VALIDATE $? "Disable Default Nodejs"
 
-dnf module enable nodejs:20 -y
+dnf module enable nodejs:20 -y &>>$LOG_FILE
 VALIDATE $? "Enabling Nodejs:20"
 
-dnf install nodejs -y
+dnf install nodejs -y &>>$LOG_FILE
 VALIDATE $? "Installing Nodejs"
 
 id roboshop
@@ -43,29 +43,29 @@ id roboshop
     echo -e "User already exist ... $Y SKIPPING $N"
   fi
 
-  mkdir -p /app
+  mkdir -p /app &>>$LOG_FILE
   VALIDATE $? "Create app directory"
 
-  curl -L -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip 
+  curl -L -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip &>>$LOG_FILE
   VALIDATE $? "Download the user Application"
 
-  cd /app
+  cd /app &>>$LOG_FILE
   VALIDATE $? "Change to app directory"
 
-  rm -rf /app/*
+  rm -rf /app/* &>>$LOG_FILE
   VALIDATE $? "Remove existing code"
 
-  unzip /tmp/user.zip
+  unzip /tmp/user.zip &>>$LOG_FILE
   VALIDATE $? "Unzip user"
 
-  npm install
+  npm install &>>$LOG_FILE
   VALIDATE $? "Installing Dependencies"
 
   cp $SCRIPT_DIR/user.service /etc/systemd/system/user.service
   VALIDATE $? "Copy Systemctl service"
 
   systemctl daemon-relaod
-  systemctl enable user
+  systemctl enable user &>>$LOG_FILE
   VALIDATE $? "Enabling User"
 
   systemctl restart user
