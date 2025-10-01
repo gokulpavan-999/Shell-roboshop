@@ -38,7 +38,7 @@ id roboshop &>>$LOG_FILE
     echo -e "User already exists ... $Y SKIPPING $N"
   fi
 
-mkdir /app
+mkdir -p /app
 VALIDATE $? "Create app Directory"
 
 curl -L -o /tmp/payment.zip https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip &>>$LOG_FILE
@@ -47,7 +47,7 @@ VALIDATE $? "Download Payment Application"
 cd /app
 VALIDATE $? "Changing app directory"
 
-rm-rf /app/*
+rm -rf /app/*
 VALIDATE $? "Remove existing Code"
 
 unzip /tmp/payment.zip &>>$LOG_FILE
