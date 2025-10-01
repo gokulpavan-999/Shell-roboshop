@@ -39,7 +39,7 @@ id roboshop &>>$LOG_FILE
     echo -e "User already exists ... $Y SKIPPING $N"
   fi
 
-mkdir /app 
+mkdir /app &>>$LOG_FILE
 VALIDATE $? "Create app directory"
   
 curl -L -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip &>>$LOG_FILE
@@ -48,21 +48,21 @@ VALIDATE $? "Download shipping Application"
 cd /app 
 VALIDATE $? "Change to app directory"
 
-rm -rf /app/*
+rm -rf /app/* &>>$LOG_FILE
 VALIDATE $? "Remove existing code"
 
 unzip /tmp/shipping.zip &>>$LOG_FILE
 VALIDATE $? "Unzip shipping"
 
-mvn clean package 
+mvn clean package &>>$LOG_FILE
 mv target/shipping-1.0.jar shipping.jar 
 
-cp $SCRIPT_DIR/shipping.service /etc/systemd/system/shipping.service
+cp $SCRIPT_DIR/shipping.service /etc/systemd/system/shipping.service &>>$LOG_FILE
 systemctl daemon-reload
 systemctl enable shipping &>>$LOG_FILE
 VALIDATE $? "Enabling shipping"
 
-dnf install mysql -y 
+dnf install mysql -y &>>$LOG_FILE
 VALIDATE $? "Installing MYSQL"
 
 mysql -h $MYSQL_HOST -uroot -pRoboShop@1 -e 'use cities' &>>$LOG_FILE
