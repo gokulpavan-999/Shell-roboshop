@@ -73,5 +73,8 @@ else
     echo -e "Shipping data is already loaded ... $Y SKIPPING $N"
 fi
 
+echo $MYSQL_HOST
+mysql -h $MYSQL_HOST -uroot -pRoboShop@1 -e "SHOW DATABASES;"
+
 systemctl restart shipping
   
