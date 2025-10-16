@@ -37,8 +37,16 @@ VALIDATE $? "Enabling MYSQL Server"
 systemctl start mysqld &>>$LOG_FILE
 VALIDATE $? "Starting MYSQL Server"
 
-mysql_secure_installation --set-root-pass Roboshop@1 &>>$LOG_FILE
-VALIDATE $? "Setting up root password"
+#mysql_secure_installation --set-root-pass Roboshop@1 &>>$LOG_FILE
+#VALIDATE $? "Setting up root password"
+
+mysql -uroot -pRoboShop@1 -e "show databases;" &>>$LOG_FILE
+if [ $? -ne 0 ]; then
+  mysql_secure_installation --set-root-pass RoboShop@1 &>>$LOG_FILE
+  VALIDATE $? "Setting up root password"
+else
+  echo -e "Root password already set ... ${Y}SKIPPING${N}"
+fi
 
 END_TIME=$(date +%s)
 TOTAL_TIME=$(( $END_TIME - $START_TIME ))
